@@ -1,0 +1,40 @@
+[core]
+editor = vim
+excludesfile = ~/.gitignore_global
+
+[user]
+email = matthewatopping@gmail.com
+name = Matthew Topping
+signingkey = 5900744BF21BAD54
+
+[includeIf "gitdir:~/code/azure-devops/work/"]
+path = ~/.gitconfig_ado_work
+
+[includeIf "gitdir:~/code/azure-devops/personal/"]
+path = ~/.gitconfig_ado_personal
+
+[log]
+showSignature = true
+
+[alias]
+co = checkout
+br = branch
+ci = commit --message
+st = status
+sw = switch
+adog = log --all --decorate --oneline --graph --no-show-signature
+
+[credential]
+helper = cache --timeout=3600
+
+[advice]
+detachedHead = false
+
+[init]
+defaultBranch = main
+
+[pull]
+rebase = true
+
+[push]
+default = current

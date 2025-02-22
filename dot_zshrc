@@ -1,0 +1,33 @@
+setopt INTERACTIVE_COMMENTS
+setopt APPEND_HISTORY
+setopt INC_APPEND_HISTORY
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
+
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# Completions
+autoload -Uz compinit && compinit
+autoload -U bashcompinit && bashcompinit
+
+## Google Cloud SDK completion
+source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc"
+source "$(brew --prefix)/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc"
+
+## Syntax highlighting
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+## Autosuggestions
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+## fzf
+source <(fzf --zsh)
+
+## Azure CLI completion
+complete -o nospace -C $(brew --prefix azure-cli)/bin/az az
+
+## Terraform completion
+complete -o nospace -C /Users/matt/bin/terraform terraform
+
+## Starship prompt
+eval "$(starship init zsh)"
