@@ -1,0 +1,21 @@
+[core]
+first_run = yes
+output = json
+only_show_errors = true
+error_recommendation = off
+no_color = true
+disable_progress_bar = true
+disable_confirm_prompt = true
+
+[logging]
+enable_log_file = true
+log_file_path = ~/logs/azure/azure-cli-%Y-%m-%d.log
+
+[extension]
+use_dynamic_install = true
+
+[cloud]
+name = AzureCloud
+
+[alias]
+create-time = true

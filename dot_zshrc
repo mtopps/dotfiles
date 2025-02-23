@@ -24,7 +24,7 @@ source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source <(fzf --zsh)
 
 ## Azure CLI completion
-complete -o nospace -C $(brew --prefix azure-cli)/bin/az az
+source ~/.zsh/completion/_az
 
 ## Terraform completion
 complete -o nospace -C /Users/matt/bin/terraform terraform

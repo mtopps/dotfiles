@@ -1,10 +1,11 @@
 # Terraform
 alias tf='terraform'
+alias tfaa="terraform apply -auto-approve"
 alias tff='terraform fmt -recursive'
 alias tfp='terraform plan'
 alias tfsl='terraform state list'
 alias tfss='terraform state show'
-alias tfaa="terraform apply -auto-approve"
+alias tfv='terraform validate'
 
 # git 
 alias gitcm='git commit -m'
@@ -13,10 +14,6 @@ alias gitdir="git rev-parse --show-toplevel"
 # gcloud
 alias gcelist="gcloud compute instances list"
 alias gcal="gcloud_account"
-
-# azcli
-alias azlogin='az login --use-device-code'
-alias az_mt='az account set --subscription mtopps'
 
 # Basic
 alias grep='grep --color=auto'

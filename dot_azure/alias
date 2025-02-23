@@ -1,0 +1,51 @@
+[li]
+command = login --use-device-code
+
+[rg]
+command = group
+
+[ls]
+command = list
+
+[storage-ls {{ url }}]
+command = storage blob list --account-name {{ url.replace("https://", "").split(".")[0] }} --container-name {{ url.replace("https://", "").split("/")[1] }}
+
+[rg-list]
+command = group list --query "[].{Name:name, Location:location, Tags:tags}"
+
+[rg-resources]
+command = resource list --resource-group ${1} --query "[].{Name:name, Type:type, Location:location}"
+
+[vm-status]
+command = vm list --query "[].{Name:name, ResourceGroup:resourceGroup, PowerState:powerState, Location:location}" -o table
+
+[vm-start]
+command = vm start --resource-group ${1} --name ${2}
+
+[vm-stop]
+command = vm deallocate --resource-group ${1} --name ${2}
+
+[storage-keys]
+command = storage account keys list --account-name ${1} --resource-group ${2} --query "[].{KeyName:keyName, Value:value}"
+
+[aks-list]
+command = aks list --query "[].{Name:name, ResourceGroup:resourceGroup, Status:provisioningState, K8Version:kubernetesVersion}"
+
+[aks-creds]
+command = aks get-credentials --resource-group ${1} --name ${2} --admin
+
+[nsg-rules]
+command = network nsg rule list --nsg-name ${1} --resource-group ${2} --query "[].{Name:name, Priority:priority, Port:sourcePortRange, Access:access}"
+
+[kv-secrets]
+command = keyvault secret list --vault-name ${1} --query "[].{Name:name, Enabled:attributes.enabled}"
+
+[kv-secret-get]
+command = keyvault secret show --vault-name ${1} --name ${2} --query "value"
+
+[logs-activity]
+command = monitor activity-log list --resource-group ${1} --query "[].{Timestamp:eventTimestamp, Operation:operationName.value, Status:status.value}"
+
+[vm-by-tag]
+command = vm list --query "[?tags.Environment==`${1}`].{Name:name, ResourceGroup:resourceGroup}"
+
