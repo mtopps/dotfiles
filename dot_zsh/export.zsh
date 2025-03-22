@@ -10,3 +10,4 @@ export SAVEHIST="$HISTSIZE"
 export HOMEBREW_NO_AUTO_UPDATE=1
 #export HOMEBREW_NO_INSTALL_FROM_API=1
 export TF_PLUGIN_CACHE_DIR="$HOME/.terraform.d/plugin-cache"
+export TERM=xterm-256color

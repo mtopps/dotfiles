@@ -2,10 +2,11 @@
 alias tf='terraform'
 alias tfaa="terraform apply -auto-approve"
 alias tff='terraform fmt -recursive'
-alias tfp='terraform plan'
-alias tfsl='terraform state list'
-alias tfss='terraform state show'
-alias tfv='terraform validate'
+# Terraform aliases
+alias tfp='terraform plan'          # Plan Terraform changes
+alias tfsl='terraform state list'   # List Terraform state resources
+alias tfss='terraform state show'   # Show details of a Terraform state resource
+alias tfv='terraform validate'     # Validate Terraform configuration
 
 # git 
 alias gitcm='git commit -m'

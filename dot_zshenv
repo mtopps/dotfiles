@@ -7,3 +7,4 @@ fi
 [[ -f $HOME/.zsh/aliases.zsh ]] && source $HOME/.zsh/aliases.zsh
 [[ -f $HOME/.zsh/fzf.zsh ]] && source $HOME/.zsh/fzf.zsh
 [[ -f $HOME/.zsh/export.zsh ]] && source $HOME/.zsh/export.zsh
+[[ -f $HOME/.zsh/terraform.zsh ]] && source $HOME/.zsh/terraform.zsh
