@@ -16,10 +16,6 @@ source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 source <(fzf --zsh)
 # source ~/.zsh/completion/_az
 eval "$(starship init zsh)"
-complete -o nospace -C /opt/homebrew/bin/terraform terraform
+eval "$(direnv hook zsh)"
 
-# The following lines have been added by Docker Desktop to enable Docker CLI completions.
-fpath=(/Users/matt/.docker/completions $fpath)
-autoload -Uz compinit
-compinit
-# End of Docker CLI completions
+complete -o nospace -C /opt/homebrew/bin/terraform terraform

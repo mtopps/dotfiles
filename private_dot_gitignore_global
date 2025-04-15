@@ -32,3 +32,5 @@ terraform.rc
 .infracost
 **/.cursor/*
 .cursorignore
+.env
+.envrc
