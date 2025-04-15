@@ -1,0 +1,348 @@
+#!/usr/bin/env zsh
+
+DEBUG=false
+for arg in "$@"; do
+    if [[ "$arg" == "--debug" ]]; then
+        DEBUG=true
+        set -- "${@:#--debug}"
+        break
+    fi
+done
+
+# -----------------------------
+# Configuration
+# -----------------------------
+
+readonly CONFIG_DIR="$HOME/.config/gcloud/configurations"
+readonly SEPARATOR="--------------------------------"
+
+readonly TEMPLATE_CONFIG=$(cat << 'EOF'
+[core]
+account = {{ EMAIL }}
+disable_usage_reporting = true
+console_log_format = detailed
+project = {{ PROJECT }}
+
+[billing]
+quota_project = {{ PROJECT }}
+
+[compute]
+region = {{ REGION }}
+zone = {{ REGION }}-a
+use_new_list_usable_subnets_api = true
+
+[ai]
+region = {{ REGION }}
+
+[ai_platform]
+region = {{ REGION }}
+
+[artifacts]
+location = {{ REGION }}
+
+[builds]
+region = {{ REGION }}
+
+[composer]
+location = {{ REGION }}
+
+[dataproc]
+region = {{ REGION }}
+
+[deploy]
+region = {{ REGION }}
+
+[filestore]
+location = {{ REGION }}
+
+[functions]
+region = {{ REGION }}
+
+[notebooks]
+location = {{ REGION }}
+
+[run]
+region = {{ REGION }}
+EOF
+)
+
+# -----------------------------
+# Utility Functions
+# -----------------------------
+
+log_message() {
+    local level=$1
+    local message=$2
+    echo "[${level}] ${message}"
+}
+
+debug_log() {
+    [[ "$DEBUG" == "true" ]] && echo "DEBUG: $1"
+}
+
+validate_profile_name() {
+    local name=$1
+    if [[ ! $name =~ ^[a-zA-Z0-9-]+$ ]]; then
+        log_message "ERROR" "Invalid profile name. Use only letters, numbers, and hyphens."
+        return 1
+    fi
+    return 0
+}
+
+show_help() {
+    cat << EOF
+Usage: gcloud_account [OPTIONS]
+
+A utility script to manage Google Cloud configurations and profiles.
+
+Options:
+    --new-profile     Create a new Google Cloud profile
+    --list-profiles   List all available profiles
+    --delete-profile  Delete an existing profile
+    --current         Show current profile details
+    --debug           Enable debug logging
+    --help            Show this help message
+
+Examples:
+    gcloud_account (Optional: --debug)
+    gcloud_account --new-profile (Optional: --debug)
+    gcloud_account --list-profiles (Optional: --debug)
+    gcloud_account --delete-profile (Optional: --debug)
+    gcloud_account --current (Optional: --debug)
+    gcloud_account --help
+
+If no options are provided, the script will let you select from existing profiles.
+EOF
+}
+
+# -----------------------------
+# Core Functions
+# -----------------------------
+
+check_dependencies() {
+    debug_log "Checking for gcloud CLI"
+    if ! command -v gcloud &> /dev/null; then
+        log_message "ERROR" "gcloud CLI is not installed"
+        exit 1
+    fi
+}
+
+get_projects() {
+    debug_log "Fetching project list"
+    local projects=("${(@f)$(gcloud projects list --format="table[no-heading](projectId,name)")}")
+    
+    if [[ ${#projects} -eq 0 ]]; then
+        log_message "ERROR" "No projects found. Please ensure you have access to at least one project."
+        return 1
+    fi
+
+    log_message "INFO" "Available projects:"
+    for i in {1..$#projects}; do
+        echo "$i. $projects[$i]"
+    done
+
+    read "selected_number?Enter the number of the project you want to use: "
+    debug_log "User selected project number: $selected_number"
+
+    if [[ $selected_number -gt 0 && $selected_number -le $#projects ]]; then
+        local project=$(echo $projects[$selected_number] | awk '{print $1}')
+        debug_log "Setting project to: $project"
+        gcloud config set project "$project" --quiet
+        return 0
+    else
+        log_message "ERROR" "Invalid selection. Please choose a valid number from the list."
+        return 1
+    fi
+}
+
+create_from_template() {
+    local profile_name=$1
+    local email=$2
+    local project=$3
+    local config_file="${CONFIG_DIR}/config_${profile_name}"
+    
+    debug_log "Creating config file: $config_file"
+    
+    echo "$TEMPLATE_CONFIG" | \
+        sed "s|{{ EMAIL }}|${email}|g" | \
+        sed "s|{{ PROJECT }}|${project}|g" \
+        > "$config_file"
+    
+    debug_log "Config file created successfully"
+}
+
+
+create_new_profile() {
+    read "profile_name?Enter a name for the new profile: "
+    debug_log "Attempting to create profile: $profile_name"
+    
+    if ! validate_profile_name "$profile_name"; then
+        return 1
+    fi
+
+    # Create the configuration first
+    debug_log "Creating new configuration"
+    if ! gcloud config configurations create "$profile_name" --quiet &>/dev/null; then
+        log_message "ERROR" "Failed to create configuration"
+        return 1
+    fi
+
+    # Activate it immediately
+    debug_log "Activating new configuration"
+    gcloud config configurations activate "$profile_name"
+
+    # Now login
+    log_message "INFO" "Logging in to Google Cloud..."
+    gcloud auth login --no-launch-browser --update-adc
+    local email=$(gcloud auth list --filter=status:ACTIVE --format="value(account)")
+    debug_log "Using email: $email"
+    
+    # Get project with error handling
+    if ! get_projects; then
+        log_message "ERROR" "Failed to get projects. Creating profile with just email for now."
+        create_from_template "$profile_name" "$email" ""  # Empty project for now
+        return 1
+    fi
+    
+    local project=$(gcloud config get project)
+    debug_log "Using project: $project"
+    
+    # Create the final configuration
+    create_from_template "$profile_name" "$email" "$project"
+    
+    log_message "SUCCESS" "Profile created and activated successfully"
+    
+    delete_profile "default"
+}
+
+show_current_profile() {
+    debug_log "Fetching current profile details"
+    local current=$(gcloud config configurations describe $(gcloud config configurations list --filter='is_active=true' --format='value(name)'))
+    echo "Current Profile Configuration:"
+    echo $SEPARATOR
+    echo "$current"
+}
+
+delete_profile() {
+    debug_log "Fetching profile list for deletion"
+    local profiles=("${(@f)$(gcloud config configurations list --format='value(NAME)')}")
+    local profile_to_delete=""
+    
+    if [[ $1 == "default" ]]; then
+        if ! echo "${profiles[@]}" | grep -q "^default$"; then
+            debug_log "Default profile not found, skipping deletion"
+            return 0
+        fi
+        profile_to_delete="default"
+        read "confirm?Would you like to delete the default profile? (y/n): "
+    else
+        echo "Available profiles:"
+        for i in {1..$#profiles}; do
+            echo "$i. $profiles[$i]"
+        done
+
+        read "selected_number?Enter the number of the profile to delete: "
+        debug_log "User selected profile number: $selected_number"
+
+        if [[ $selected_number -gt 0 && $selected_number -le $#profiles ]]; then
+            profile_to_delete=$profiles[$selected_number]
+        else
+            log_message "ERROR" "Invalid selection"
+            return 1
+        fi
+        read "confirm?Are you sure you want to delete profile '$profile_to_delete'? (y/n): "
+    fi
+
+    if [[ $profile_to_delete == $(gcloud config configurations list --filter='is_active=true' --format='value(name)') ]]; then
+        log_message "ERROR" "Cannot delete active profile"
+        return 1
+    fi
+    
+    if [[ $confirm =~ ^[Yy]$ ]]; then
+        debug_log "Deleting profile: $profile_to_delete"
+        gcloud config configurations delete $profile_to_delete --quiet
+        log_message "SUCCESS" "Profile deleted successfully"
+    else
+        debug_log "User cancelled deletion"
+    fi
+}
+
+list_profiles() {
+    debug_log "Listing all profiles"
+    echo "Available Profiles:"
+    echo $SEPARATOR
+    gcloud config configurations list
+}
+
+gcloud_login() {
+    debug_log "Starting login process"
+    local profiles=("${(@f)$(gcloud config configurations list --format='value(NAME)')}")
+
+    if [[ $#profiles -eq 1 && $profiles[1] == "default" ]]; then
+        log_message "INFO" "Only the default profile exists. You should create a new profile."
+        read "create?Would you like to create a new profile? (y/n): "
+        if [[ $create =~ ^[Yy]$ ]]; then
+            create_new_profile
+            return
+        fi
+    else
+        echo "Available profiles:"
+        for i in {1..$#profiles}; do
+            echo "$i. $profiles[$i]"
+        done
+
+        read "selected_number?Enter the number of the profile you want to use: "
+        debug_log "User selected profile number: $selected_number"
+
+        if [[ $selected_number -gt 0 && $selected_number -le $#profiles ]]; then
+            local selected_profile=$profiles[$selected_number]
+            debug_log "Activating profile: $selected_profile"
+            gcloud config configurations activate "$selected_profile"
+            log_message "SUCCESS" "Activated profile: $selected_profile"
+            gcloud auth login --no-launch-browser --update-adc
+        else
+            log_message "ERROR" "Invalid selection. Please choose a valid number from the list."
+            return 1
+        fi
+    fi
+}
+
+# -----------------------------
+# Main Script
+# -----------------------------
+
+debug_log "Script started with arguments: $@"
+check_dependencies
+
+case "$1" in
+    --new-profile)
+        debug_log "Creating new profile"
+        create_new_profile
+        ;;
+    --list-profiles)
+        debug_log "Listing profiles"
+        list_profiles
+        ;;
+    --delete-profile)
+        debug_log "Deleting profile"
+        delete_profile
+        ;;
+    --current)
+        debug_log "Showing current profile"
+        show_current_profile
+        ;;
+    --help)
+        debug_log "Showing help"
+        show_help
+        ;;
+    "")
+        debug_log "No arguments provided, running login flow"
+        gcloud_login
+        ;;
+    *)
+        debug_log "Unknown option provided: $1"
+        log_message "ERROR" "Unknown option '$1'"
+        show_help
+        exit 1
+        ;;
+esac

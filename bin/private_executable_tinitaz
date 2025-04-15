@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+
+# tinitaz: helper utility for initialising Terraform for AzureRM backend
+# Matthew Topping
+
+# Change log
+#
+# v1.0.0  2024-11-02  Initial version for AzureRM backend
+# v1.0.1  2024-03-19  Added shell compatibility improvements
+
+# Default AzureRM backend configuration can be specified in the `.tinitaz` file.
+
+# To initialize Terraform with specific state locations for different environments,
+# you can specify these locations in the `.tinitaz` configuration file. The configuration
+# supports dynamic content, allowing you to define state locations tailored to each
+# environment. For instance:
+#
+# Method 1 - Environment variables (recommended):
+# Format: "<resource_group>/<storage_account>/<container>/${git_project_name}/${env}"
+# Example:
+# PROD_STATE_LOCATION="RSG-TFSTATE-STORAGE/adotfstatestorage/tfstate/${git_project_name}/${env}"
+#
+# Method 2 - Associative array (bash only):
+# declare -A state_location
+# state_location["PROD"]="RSG-TFSTATE-STORAGE/adotfstatestorage/tfstate/${git_project_name}/${env}"
+
+if [[ $1 = -d ]]; then
+    set -x
+    shift
+fi
+
+git_project_dir="$(git rev-parse --show-toplevel)"
+
+if [[ -z $git_project_dir ]]; then
+    echo "Cannot find base directory of current git project"
+    exit 1
+fi
+
+git_project_name="$(basename "$(git rev-parse --show-toplevel)")"
+subscription_id=$(az account show --query id -o tsv)
+
+# Load AzureRM configuration from .tinitaz
+project_config="${git_project_dir}/.tinitaz"
+if [[ ! -r $project_config ]]; then
+    echo "Project config '$project_config' not found"
+    exit 2
+else
+    env=$1
+    if [[ -z $env ]]; then
+        echo "Error: Environment not specified"
+        echo "Usage: $(basename "$0") <environment>"
+        exit 1
+    fi
+
+    # shellcheck source=/dev/null
+    . "$project_config"
+
+    # Try environment variable style first
+    state_location_var="${env}_STATE_LOCATION"
+    state_path=${!state_location_var}
+
+    # If not found, try associative array style
+    if [[ -z $state_path ]] && [[ -n ${state_location[$env]} ]]; then
+        state_path=${state_location[$env]}
+    fi
+
+    if [[ -z $state_path ]]; then
+        echo "Error: No state location defined for environment '$env'"
+        exit 1
+    fi
+fi
+
+env_vars_file="${git_project_dir}/environments/${env}.tfvars"
+
+if [[ -f $env_vars_file ]]; then
+    echo "Found environment vars file: ${env_vars_file}"
+fi
+
+IFS='/' read -r resource_group_name storage_account_name container_name _ <<<"$state_path"
+
+key="${git_project_name}/${env}/terraform.tfstate"
+
+set -x
+terraform init -reconfigure \
+    -backend-config="subscription_id=$subscription_id" \
+    -backend-config="resource_group_name=$resource_group_name" \
+    -backend-config="storage_account_name=$storage_account_name" \
+    -backend-config="container_name=$container_name" \
+    -backend-config="key=$key"
+set +x

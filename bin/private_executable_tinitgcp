@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+
+if [[ $1 = -d ]]; then
+    set -x
+    shift
+fi
+
+git_project_dir="$(git rev-parse --show-toplevel)"
+
+if [[ -z $git_project_dir ]]; then
+    echo "Cannot find base directory of current git project"
+    exit 1
+fi
+
+git_project_name="$(basename "$(git rev-parse --show-toplevel)")"
+
+if [[ $# -eq 1 ]]; then
+    project_config="${git_project_dir}/.tinitgcp"
+    if [[ ! -r $project_config ]]; then
+        echo "Project config '$project_config' not found"
+        exit 2
+    else
+        env=$1
+        declare -A state_location
+        # shellcheck source=/dev/null
+        . $project_config
+        state_path=${state_location[$env]}
+    fi
+elif [[ $# -eq 2 ]]; then
+    env=$2
+    if [[ -f ${git_project_dir}/.tinitgcp ]]; then
+        echo "Error: this project has a .tinitgcp file but common state argument '${env}' given"
+        exit 3
+    fi
+    if [[ $1 = fbu ]]; then
+        state_path="fbu-shd-iac-bucket/tfstate/${git_project_name}/${env}"
+    elif [[ $1 = fbutest ]]; then
+        state_path="fbutest-shd-iac-bucket/tfstate/${git_project_name}/${env}"
+    else
+        state_path="$1"
+    fi
+    shift
+else
+    echo "Usage: tinitgcp [-d] [TARGET_GCP_ORG_ALIAS|BUCKET/PREFIX] ENVIRONMENT"
+    exit 4
+fi
+
+env_vars_file="${git_project_dir}/environments/${env}.tfvars"
+
+if [[ ! -f $env_vars_file ]]; then
+    echo "Warning: environment vars file '${env_vars_file}' not found" >&2
+fi
+
+bucket=${state_path%%/*}
+base_prefix=${state_path#*/}
+
+if [[ $PWD != $git_project_dir ]]; then
+    prev_pwd=${PWD}
+    cd "${git_project_dir}"
+fi
+
+set -x
+terraform init -reconfigure -backend-config="bucket=$bucket" -backend-config="prefix=$base_prefix"
+set +x
+
+if [[ -n $prev_pwd ]]; then
+    cd $prev_pwd
+    unset prev_pwd
+fi
