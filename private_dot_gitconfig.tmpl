@@ -3,8 +3,8 @@ editor = vim
 excludesfile = ~/.gitignore_global
 
 [user]
-email = matthewatopping@gmail.com
-name = Matthew Topping
+email = {{ keyring "github" "email" }}
+name = {{ keyring "github" "name" }}
 
 [includeIf "gitdir:~/code/azure-devops/work/"]
 path = ~/.gitconfig_ado_work
