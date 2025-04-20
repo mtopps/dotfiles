@@ -2,7 +2,6 @@
 alias tf='terraform'
 alias tfaa="terraform apply -auto-approve"
 alias tff='terraform fmt -recursive'
-# Terraform aliases
 alias tfp='terraform plan'          # Plan Terraform changes
 alias tfsl='terraform state list'   # List Terraform state resources
 alias tfss='terraform state show'   # Show details of a Terraform state resource

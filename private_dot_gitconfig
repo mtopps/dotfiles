@@ -5,7 +5,6 @@ excludesfile = ~/.gitignore_global
 [user]
 email = matthewatopping@gmail.com
 name = Matthew Topping
-signingkey = 5900744BF21BAD54
 
 [includeIf "gitdir:~/code/azure-devops/work/"]
 path = ~/.gitconfig_ado_work
