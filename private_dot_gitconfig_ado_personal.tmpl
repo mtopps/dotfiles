@@ -1,21 +1,31 @@
 [user]
-        name = Matthew Topping
-        email = a-matthew.topping@mtopps.com
+name = name = {{ keyring "github" "name" }}
+email = {{ keyring "ado" "email" }}
+
 [log]
-        showSignature = true
+showSignature = true
+
 [alias]
-        co = checkout
-        br = branch
-        ci = commit
-        st = status
-        adog = log --all --decorate --oneline --graph --no-show-signature
+co = checkout
+br = branch
+ci = commit
+st = status
+adog = log --all --decorate --oneline --graph --no-show-signature
+
 [credential]
-        helper = cache --timeout=3600
+helper = cache --timeout=3600
+
 [advice]
-        detachedHead = false
+detachedHead = false
+
 [init]
-        defaultBranch = main
+defaultBranch = main
+
 [pull]
-        rebase = true
+rebase = true
+
 [push]
-        default = current
+default = current
+
+[commit]
+gpgsign = false
