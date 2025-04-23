@@ -35,10 +35,15 @@
   "window.newWindowProfile": "Default",
   "workbench.activityBar.location": "default",
   "workbench.activityBar.orientation": "vertical",
-  "workbench.colorTheme": "GitHub Dark Default",
   "workbench.editor.enablePreview": false,
   "workbench.iconTheme": "material-icon-theme",
   "workbench.preferredDarkColorTheme": "Monokai Dimmed",
   "workbench.tips.enabled": true,
-  "chat.commandCenter.enabled": false
+  "chat.commandCenter.enabled": false,
+  "window.commandCenter": true,
+  "redhat.telemetry.enabled": false,
+  "workbench.productIconTheme": "material-product-icons",
+  "cursor.composer.shouldAllowCustomModes": true,
+  "update.releaseTrack": "prerelease",
+  "workbench.colorTheme": "GitHub Dark Default"
 }
