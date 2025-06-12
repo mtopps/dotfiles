@@ -45,5 +45,11 @@
   "workbench.productIconTheme": "material-product-icons",
   "cursor.composer.shouldAllowCustomModes": true,
   "update.releaseTrack": "prerelease",
-  "workbench.colorTheme": "GitHub Dark Default"
+  "workbench.colorTheme": "GitHub Dark Default",
+  "ansible.lightspeed.enabled": false,
+  "ansible.lightspeed.suggestions.enabled": false,
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "cursor.diffs.useCharacterLevelDiffs": true
 }
