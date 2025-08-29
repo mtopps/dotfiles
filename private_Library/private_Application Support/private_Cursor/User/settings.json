@@ -36,7 +36,6 @@
   "workbench.activityBar.location": "default",
   "workbench.activityBar.orientation": "vertical",
   "workbench.editor.enablePreview": false,
-  "workbench.iconTheme": "material-icon-theme",
   "workbench.preferredDarkColorTheme": "Monokai Dimmed",
   "workbench.tips.enabled": true,
   "chat.commandCenter.enabled": false,
@@ -51,5 +50,21 @@
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "cursor.diffs.useCharacterLevelDiffs": true
+  "cursor.diffs.useCharacterLevelDiffs": true,
+  "git.suggestSmartCommit": false,
+  "workbench.iconTheme": "material-icon-theme",
+  "files.associations": {
+    "*.j2": "ansible-jinja"
+  },
+  "remote.SSH.remotePlatform": {
+    "pve01": "linux"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "cursor.semanticSearch.includePullRequests": false,
+  "cursor.cpp.disabledLanguages": [
+    "plaintext"
+  ],
+  "openscad.launchPath": "/Applications/OpenSCAD-2021.01.app/Contents/MacOS/OpenSCAD"
 }
