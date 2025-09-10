@@ -43,7 +43,6 @@
   "redhat.telemetry.enabled": false,
   "workbench.productIconTheme": "material-product-icons",
   "cursor.composer.shouldAllowCustomModes": true,
-  "update.releaseTrack": "prerelease",
   "workbench.colorTheme": "GitHub Dark Default",
   "ansible.lightspeed.enabled": false,
   "ansible.lightspeed.suggestions.enabled": false,
