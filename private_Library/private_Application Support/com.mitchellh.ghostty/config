@@ -1,5 +1,5 @@
 # THEME SETTINGS
-theme = nord
+theme = Terminal Basic Dark
 bold-is-bright = true
 cursor-style = block
 

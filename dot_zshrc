@@ -4,6 +4,7 @@ setopt INC_APPEND_HISTORY
 setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_SPACE
 
+HISTFILE="$HOME/.zsh_history"
 HISTSIZE=1000000
 SAVEHIST=1000000
 
@@ -25,7 +26,11 @@ eval "$(starship init zsh)"
 # Direnv
 eval "$(direnv hook zsh)"
 
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/matt/.lmstudio/bin"
-# End of LM Studio CLI section
+# VSCode integration
+[[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path zsh)"
 
+
+# Added by Antigravity
+export PATH="/Users/matt/.antigravity/antigravity/bin:$PATH"
+
+eval "$(op completion zsh)"; compdef _op op

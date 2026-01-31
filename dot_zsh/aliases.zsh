@@ -10,6 +10,7 @@ alias tfv='terraform validate'     # Validate Terraform configuration
 # git 
 alias gitcm='git commit -m'
 alias gitdir="git rev-parse --show-toplevel"
+alias gitpcr='git add . && pre-commit run'
 
 # gcloud
 alias gcelist="gcloud compute instances list"
@@ -21,10 +22,10 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 alias zshrc='source ~/.zshrc'
 
-alias ll='ls -la'
-alias llt='ls -ltra'
-alias la='ls -A'
-alias l='ls -CF'
+alias ll='ls -la --color=auto'
+alias llt='ls -ltra --color=auto'
+alias la='ls -A --color=auto'
+alias l='ls -CF --color=auto'
 
 alias history="history 1"
 

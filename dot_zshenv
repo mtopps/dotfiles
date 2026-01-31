@@ -2,6 +2,7 @@ if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
 
-[[ -f $HOME/.zsh/aliases.zsh ]] && source $HOME/.zsh/aliases.zsh
-[[ -f $HOME/.zsh/fzf.zsh ]] && source $HOME/.zsh/fzf.zsh
-[[ -f $HOME/.zsh/export.zsh ]] && source $HOME/.zsh/export.zsh
+# Source all zsh configuration files
+for file in $HOME/.zsh/*.zsh; do
+    [[ -f "$file" ]] && source "$file"
+done
