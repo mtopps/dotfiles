@@ -1,0 +1,38 @@
+[user]
+name = name = Matthew Topping
+email = a-matthew.topping@mtopps.com
+signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAIthQd2cPM6/EnGwyTBI2eiErzU4MDK974oV9MhHs5S
+
+[gpg]
+format = ssh
+
+[gpg "ssh"]
+program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+
+[commit]
+gpgsign = true
+
+[log]
+showSignature = true
+
+[alias]
+co = checkout
+br = branch
+ci = commit
+st = status
+adog = log --all --decorate --oneline --graph --no-show-signature
+
+[credential]
+helper = cache --timeout=3600
+
+[advice]
+detachedHead = false
+
+[init]
+defaultBranch = main
+
+[pull]
+rebase = true
+
+[push]
+default = current

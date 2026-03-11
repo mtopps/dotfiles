@@ -1,3 +1,4 @@
+{{- if eq .chezmoi.os "darwin" -}}
 setopt INTERACTIVE_COMMENTS
 setopt APPEND_HISTORY
 setopt INC_APPEND_HISTORY
@@ -30,4 +31,6 @@ eval "$(direnv hook zsh)"
 [[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path zsh)"
 
 # Added by Antigravity
-export PATH="/Users/matt/.antigravity/antigravity/bin:$PATH"
+export PATH="{{ .chezmoi.homeDir }}/.antigravity/antigravity/bin:$PATH"
+
+{{ end }}

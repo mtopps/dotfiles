@@ -1,10 +1,3 @@
-# GitHub configuration
-  Host docksrv03
-    HostName 192.168.1.180
-
-  Host debrid01
-    HostName 172.16.51.172
-    User ubuntu
 
 Host github.com
     User git
@@ -29,14 +22,12 @@ Host *
 Host nas medianas
     Port 2284
 
-Host ig88 r2d2 k2so pbs* pdcm*
+Host ig88 r2d2 k2so pbs* pdcm* lxc*
     User root
 
 
 Host docks* adoagent plex
     User matt
 
-# Work laptop WSL 2
-Host work
-    User a-matthewt
-    Port 2222
+Host docksrv03
+    HostName 192.168.1.180
