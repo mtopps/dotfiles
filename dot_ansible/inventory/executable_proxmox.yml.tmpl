@@ -1,0 +1,43 @@
+plugin: community.proxmox.proxmox
+url: "https://192.168.1.21:8006"
+
+user: "{{ lookup('community.general.onepassword', 'proxmox_ansible', field='username', vault='homelab') }}"
+token_id: "{{ lookup('community.general.onepassword', 'proxmox_ansible', field='token_id', vault='homelab') }}"
+token_secret: "{{ lookup('community.general.onepassword', 'proxmox_ansible', field='token_secret', vault='homelab') }}"
+
+qemu_extended_statuses: true
+use_extra_vars: true
+validate_certs: false
+want_facts: true
+want_proxmox_nodes_ansible_host: true
+
+groups:
+  # Cloud-init images
+  alpine_hosts: "'alpine' in (proxmox_tags_parsed|list)"
+  centos_hosts: "'centos' in (proxmox_tags_parsed|list)"
+  debian_hosts: "'debian' in (proxmox_tags_parsed|list)"
+  docker_hosts: "'docker' in (proxmox_tags_parsed|list)"
+  fedora_hosts: "'fedora' in (proxmox_tags_parsed|list)"
+  suse_hosts: "'suse' in (proxmox_tags_parsed|list)"
+  oracle_hosts: "'oracle' in (proxmox_tags_parsed|list)"
+  rocky_hosts: "'rocky' in (proxmox_tags_parsed|list)"
+  ubuntu_hosts: "'ubuntu' in (proxmox_tags_parsed|list)"
+
+  # Roles
+  k3s_hosts: "'k3s' in (proxmox_tags_parsed|list)"
+  k8s_hosts: "'k8s' in (proxmox_tags_parsed|list)"
+  app_hosts: "'app' in (proxmox_tags_parsed|list)"
+  db_hosts: "'db' in (proxmox_tags_parsed|list)"
+
+  # Proxmox nodes & running VMs
+  node_ig88: "'ig88' in proxmox_node and proxmox_status == 'running'"
+  node_k2so: "'k2so' in proxmox_node and proxmox_status == 'running'"
+  node_r2d2: "'r2d2' in proxmox_node and proxmox_status == 'running'"
+
+keyed_groups:
+  - key: proxmox_tags_parsed
+    prefix: group
+    separator: "_"
+
+compose:
+  ansible_host: proxmox_agent_interfaces | map(attribute='ip-addresses') | flatten | select('ansible.utils.ipv4') | reject('equalto', '127.0.0.1') | reject('match', '^172\.') | first | default(proxmox_net0.ip)

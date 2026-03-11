@@ -1,0 +1,42 @@
+# GitHub configuration
+  Host docksrv03
+    HostName 192.168.1.180
+
+  Host debrid01
+    HostName 172.16.51.172
+    User ubuntu
+
+Host github.com
+    User git
+    HostName github.com
+    PreferredAuthentications publickey
+    IdentityFile ~/.ssh/id_ed25519
+    CanonicalizeHostname no
+
+# General settings
+
+CanonicalizeHostname yes
+CanonicalizeFallbackLocal yes
+ServerAliveInterval 15
+CanonicalDomains mtopps.com
+
+# macOS settings
+Host *
+    IdentityAgent "~/.1password/agent.sock"
+    SetEnv TERM=xterm-256color
+
+# Local network
+Host nas medianas
+    Port 2284
+
+Host ig88 r2d2 k2so pbs* pdcm*
+    User root
+
+
+Host docks* adoagent plex
+    User matt
+
+# Work laptop WSL 2
+Host work
+    User a-matthewt
+    Port 2222
