@@ -1,3 +1,4 @@
+{{- if eq .chezmoi.os "darwin" }}
 if [ -d "$HOME/bin" ] ; then
     PATH="$HOME/bin:$PATH"
 fi
@@ -6,3 +7,5 @@ fi
 for file in $HOME/.zsh/*.zsh; do
     [[ -f "$file" ]] && source "$file"
 done
+
+{{ end }}

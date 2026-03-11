@@ -1,1 +1,4 @@
+{{- if eq .chezmoi.os "darwin" }}
 export PATH="$PATH:{{ .chezmoi.homeDir }}/.local/bin"
+
+{{ end }}

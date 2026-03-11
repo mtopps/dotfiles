@@ -1,4 +1,4 @@
-{{- if and (eq .chezmoi.os "darwin") (eq .chezmoi.hostname "nimbus") -}}
+{{- if and (eq .chezmoi.os "darwin") (eq .chezmoi.hostname "nimbus") }}
 [defaults]
 retry_files_enabled=False
 host_key_checking=False
@@ -17,4 +17,5 @@ pipelining = True
 [persistent_connection]
 connect_timeout = 90
 command_timeout = 60
-{{- end }}
+
+{{ end }}
