@@ -1,0 +1,14 @@
+{{- if and (eq .chezmoi.os "darwin") (eq .chezmoi.hostname "nimbus") -}}
+Host github.com
+  HostName github.com
+  User git
+  IdentityFile ~/.ssh/id_ed25519
+  IdentitiesOnly yes
+  IdentityAgent "~/Library/Group Containers/2BU8B4S4V3.com.1password/t/agent.sock"
+
+Host *
+  AddKeysToAgent yes
+  UseKeychain yes
+  IdentityFile ~/.ssh/id_ed25519
+  IdentityAgent "~/Library/Group Containers/2BU8B4S4V3.com.1password/t/agent.sock"
+{{- end }}
