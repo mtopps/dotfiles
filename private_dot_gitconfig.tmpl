@@ -3,13 +3,10 @@ editor = vim
 excludesfile = ~/.gitignore_global
 
 [user]
-email = {{ keyring "github" "email" }}
-name = {{ keyring "github" "name" }}
+email = {{ .email }}
+name = {{ .name }}
 
-[includeIf "gitdir:~/code/azure-devops/work/"]
-path = ~/.gitconfig_ado_work
-
-[includeIf "gitdir:~/code/azure-devops/personal/"]
+[includeIf "gitdir:~/code/azure-devops/"]
 path = ~/.gitconfig_ado_personal
 
 [log]

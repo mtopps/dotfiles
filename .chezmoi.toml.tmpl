@@ -1,7 +1,44 @@
+{{- $email := "" -}}
+{{- if hasKey . "email" -}}
+{{-   $email = .email -}}
+{{- else -}}
+{{-   $email = promptString "Personal Email" "matthewatopping@gmail.com" -}}
+{{- end -}}
+
+{{- $name := "" -}}
+{{- if hasKey . "name" -}}
+{{-   $name = .name -}}
+{{- else -}}
+{{-   $name = promptString "Full Name" "Matthew Topping" -}}
+{{- end -}}
+
+{{- $is_work := false -}}
+{{- if hasKey . "is_work" -}}
+{{-   $is_work = .is_work -}}
+{{- else -}}
+{{-   $is_work = promptBool "Is this a work machine" false -}}
+{{- end -}}
+
+{{- $work_email := "" -}}
+{{- if $is_work -}}
+{{-   if hasKey . "work_email" -}}
+{{-     $work_email = .work_email -}}
+{{-   else -}}
+{{-     $work_email = promptString "Work Email" -}}
+{{-   end -}}
+{{- end -}}
+
+
 encryption = "age"
 [age]
     identity = "~/.config/chezmoi/key.txt"
-    recipient = "{{ keyring "chezmoi" "age-recipient" }}"
+    recipient = "age1rtdt7h52cclxrmvrealnfp2tkx77tupwfty53xqp9wss8r43dgkqqg006n"
+
+[data]
+    email = {{ $email | quote }}
+    name = {{ $name | quote }}
+    is_work = {{ $is_work }}
+    work_email = {{ $work_email | quote }}
 
 [git]
     autoCommit = true
@@ -9,3 +46,4 @@ encryption = "age"
 [edit]
     command = "code"
     args = ["--wait"]
+

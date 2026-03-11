@@ -1,6 +1,6 @@
 [user]
-name = name = {{ keyring "github" "name" }}
-email = {{ keyring "ado" "email" }}
+name = {{ .name }}
+email = {{ .email }}
 
 [log]
 showSignature = true
@@ -8,8 +8,8 @@ showSignature = true
 [alias]
 co = checkout
 br = branch
-ci = commit
 st = status
+swc = switch -c
 adog = log --all --decorate --oneline --graph --no-show-signature
 
 [credential]

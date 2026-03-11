@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# Only run on Darwin (macOS)
+{{ if eq .chezmoi.os "darwin" -}}
+
+if ! command -v brew >/dev/null 2>&1; then
+    echo "Homebrew not found. Installing..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    
+    # Add to path for the rest of this script
+    if [[ $(uname -m) == "arm64" ]]; then
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    else
+        eval "$(/usr/local/bin/brew shellenv)"
+    fi
+else
+    echo "Homebrew is already installed."
+fi
+
+if ! command -v op >/dev/null 2>&1; then
+    echo "1Password CLI not found. Installing..."
+    brew install 1password-cli
+else
+    echo "1Password CLI is already installed."
+fi
+
+
+{{ end -}}

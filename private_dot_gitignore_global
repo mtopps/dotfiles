@@ -30,8 +30,6 @@ override.tf.json
 .terraformrc
 terraform.rc
 .infracost
-**/.cursor/*
-.cursorignore
 .env
 .envrc
 **/.agents/*

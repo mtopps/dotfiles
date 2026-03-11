@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Brewfile hash: {{ include "Brewfile" | sha256sum }}
+if command -v brew >/dev/null 2>&1; then
+    echo "Installing/Updating Homebrew packages..."
+    brew bundle --file={{ joinPath .chezmoi.sourceDir "Brewfile" }}
+else
+    echo "Homebrew not found. Skipping package installation."
+fi
