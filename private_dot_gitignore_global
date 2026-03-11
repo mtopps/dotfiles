@@ -34,3 +34,9 @@ terraform.rc
 .cursorignore
 .env
 .envrc
+**/.agents/*
+**/.claude/*
+**/.venv/*
+**/.mypy_cache/*
+.Trash/
+.Trash

@@ -14,7 +14,7 @@ alias gitpcr='git add . && pre-commit run'
 
 # gcloud
 alias gcelist="gcloud compute instances list"
-alias gcal="gcloud_account"
+alias gcacc="gcloud_account"
 
 # Basic
 alias grep='grep --color=auto'

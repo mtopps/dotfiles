@@ -24,6 +24,7 @@
 # declare -A state_location
 # state_location["PROD"]="RSG-TFSTATE-STORAGE/adotfstatestorage/tfstate/${git_project_name}/${env}"
 
+
 if [[ $1 = -d ]]; then
     set -x
     shift

@@ -29,8 +29,5 @@ eval "$(direnv hook zsh)"
 # VSCode integration
 [[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path zsh)"
 
-
 # Added by Antigravity
 export PATH="/Users/matt/.antigravity/antigravity/bin:$PATH"
-
-eval "$(op completion zsh)"; compdef _op op

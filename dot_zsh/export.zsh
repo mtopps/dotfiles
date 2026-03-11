@@ -9,4 +9,4 @@ export TF_PLUGIN_CACHE_DIR="$HOME/.terraform.d/plugin-cache"
 
 # General
 export TERM=xterm-256color
-export PATH="$PATH:/Users/matt/.local/bin"
+export PATH="$PATH:$HOME/.local/bin"
