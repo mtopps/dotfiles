@@ -1,3 +1,4 @@
+{{- if eq .chezmoi.os "darwin" }}
 # fzf parameters used in all widgets - configure layout and wrapped the preview results (useful in large command rendering)
 export FZF_DEFAULT_OPTS="--height 100% --layout reverse --preview-window=wrap"
 
@@ -9,3 +10,4 @@ export FZF_CTRL_T_COMMAND="fd --exclude .git --ignore-file $HOME/.my-custom-zsh/
 
 # CTRL + T: put the file content if item select is a file, or put tree command output if item selected is directory
 export FZF_CTRL_T_OPTS="--preview '[ -d {} ] && tree -C {} || bat --color=always --style=numbers {}'"
+{{ end }} 
