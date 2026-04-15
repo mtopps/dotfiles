@@ -5,19 +5,41 @@ if [[ $1 = -d ]]; then
     shift
 fi
 
-git_project_dir="$(git rev-parse --show-toplevel)"
+invocation_dir=$PWD
+git_project_dir="$(git rev-parse --show-toplevel 2>/dev/null || true)"
 
 if [[ -z $git_project_dir ]]; then
-    echo "Cannot find base directory of current git project"
-    exit 1
+    search_root=/
+else
+    search_root=$git_project_dir
 fi
 
-git_project_name="$(basename "$(git rev-parse --show-toplevel)")"
+folder_name="$(basename "$invocation_dir")"
+
+project_config=
+config_search_dir=$invocation_dir
+while :; do
+    if [[ -r $config_search_dir/.tinitgcp ]]; then
+        project_config="$config_search_dir/.tinitgcp"
+        break
+    fi
+
+    if [[ $config_search_dir = $search_root ]]; then
+        break
+    fi
+
+    config_search_dir=$(dirname "$config_search_dir")
+done
+
+if [[ -n $project_config ]]; then
+    config_dir=$(dirname "$project_config")
+else
+    config_dir=$invocation_dir
+fi
 
 if [[ $# -eq 1 ]]; then
-    project_config="${git_project_dir}/.tinitgcp"
     if [[ ! -r $project_config ]]; then
-        echo "Project config '$project_config' not found"
+        echo "Project config '.tinitgcp' not found between '$invocation_dir' and '$search_root'"
         exit 2
     else
         env=$1
@@ -28,24 +50,18 @@ if [[ $# -eq 1 ]]; then
     fi
 elif [[ $# -eq 2 ]]; then
     env=$2
-    if [[ -f ${git_project_dir}/.tinitgcp ]]; then
+    if [[ -n $project_config ]]; then
         echo "Error: this project has a .tinitgcp file but common state argument '${env}' given"
         exit 3
     fi
-    if [[ $1 = fbu ]]; then
-        state_path="fbu-shd-iac-bucket/tfstate/${git_project_name}/${env}"
-    elif [[ $1 = fbutest ]]; then
-        state_path="fbutest-shd-iac-bucket/tfstate/${git_project_name}/${env}"
-    else
-        state_path="$1"
-    fi
+    state_path="$1"
     shift
 else
-    echo "Usage: tinitgcp [-d] [TARGET_GCP_ORG_ALIAS|BUCKET/PREFIX] ENVIRONMENT"
+    echo "Usage: tinitgcp [-d] [BUCKET/PREFIX] ENVIRONMENT"
     exit 4
 fi
 
-env_vars_file="${git_project_dir}/environments/${env}.tfvars"
+env_vars_file="${config_dir}/environments/${env}.tfvars"
 
 if [[ ! -f $env_vars_file ]]; then
     echo "Warning: environment vars file '${env_vars_file}' not found" >&2
@@ -54,9 +70,9 @@ fi
 bucket=${state_path%%/*}
 base_prefix=${state_path#*/}
 
-if [[ $PWD != $git_project_dir ]]; then
+if [[ $PWD != $invocation_dir ]]; then
     prev_pwd=${PWD}
-    cd "${git_project_dir}"
+    cd "$invocation_dir"
 fi
 
 set -x
