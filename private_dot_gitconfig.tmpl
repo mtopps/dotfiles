@@ -1,11 +1,12 @@
+{{- if and (eq .chezmoi.os "darwin") (eq .chezmoi.hostname "nimbus") -}}
 [core]
   editor = vim
   excludesfile = ~/.gitignore_global
 
 [user]
-  email = matthewatopping@gmail.com
-  name = Matthew Topping
-  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ1AC6C4tbxCQmbjnfZjfXx8tuZj4KaWr11qrKVHuntU
+  email = {{ .email }}
+  name = {{ .name }}
+  signingkey = {{ onepasswordRead "op://sshkeys/Git signing personal/public key" }}
 
 [gpg]
   format = ssh
@@ -41,5 +42,4 @@
 
 [push]
   default = current
-
-
+{{ end }}
