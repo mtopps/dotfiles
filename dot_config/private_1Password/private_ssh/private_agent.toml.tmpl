@@ -2,6 +2,7 @@
 # This is the 1Password SSH agent config file.
 # This file is used to configure the 1Password SSH agent.
 ssh-keys = [
+  { item = "id_ed25519", vault = "sshkeys" },
   { item = "Git signing personal", vault = "sshkeys" },
   { item = "Git signing work", vault = "sshkeys" }
 ]
