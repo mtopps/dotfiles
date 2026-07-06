@@ -32,7 +32,10 @@
 encryption = "age"
 [age]
     identity = "~/.config/chezmoi/key.txt"
-    recipient = "age1rtdt7h52cclxrmvrealnfp2tkx77tupwfty53xqp9wss8r43dgkqqg006n"
+    recipient = "{{ onepasswordRead "op://Private/chezmoi-age/username" }}"
+
+[onepassword]
+    mode = "account"
 
 [data]
     email = {{ $email | quote }}

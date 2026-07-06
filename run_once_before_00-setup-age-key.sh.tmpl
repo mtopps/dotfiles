@@ -1,0 +1,15 @@
+#!/bin/bash
+# run_once_before_00-setup-age-key.sh.tmpl
+# Fetch age identity key from 1Password Connect
+
+set -euo pipefail
+
+mkdir -p ~/.config/chezmoi
+
+# Fetch the age secret key from 1Password
+op read "op://Private/chezmoi-age/password" > ~/.config/chezmoi/key.txt
+
+# Set restrictive permissions
+chmod 600 ~/.config/chezmoi/key.txt
+
+echo "✓ Age key configured from 1Password Connect"
