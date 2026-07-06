@@ -28,26 +28,25 @@
 {{-   end -}}
 {{- end -}}
 
+encryption: age
+age:
+  identity: ~/.config/chezmoi/key.txt
+  recipient: "{{ onepasswordRead "op://Private/chezmoi-age/username" }}"
 
-encryption = "age"
-[age]
-    identity = "~/.config/chezmoi/key.txt"
-    recipient = "{{ onepasswordRead "op://Private/chezmoi-age/username" }}"
+onepassword:
+  mode: account
 
-[onepassword]
-    mode = "account"
+data:
+  email: {{ $email | quote }}
+  name: {{ $name | quote }}
+  is_work: {{ $is_work }}
+  work_email: {{ $work_email | quote }}
 
-[data]
-    email = {{ $email | quote }}
-    name = {{ $name | quote }}
-    is_work = {{ $is_work }}
-    work_email = {{ $work_email | quote }}
+git:
+  autoCommit: true
+  autoPush: true
 
-[git]
-    autoCommit = true
-    autoPush = true
-
-[edit]
-    command = "code"
-    args = ["--wait"]
-
+edit:
+  command: code
+  args:
+    - --wait
