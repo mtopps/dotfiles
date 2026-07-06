@@ -48,4 +48,3 @@ command = monitor activity-log list --resource-group ${1} --query "[].{Timestamp
 
 [vm-by-tag]
 command = vm list --query "[?tags.Environment==`${1}`].{Name:name, ResourceGroup:resourceGroup}"
-
