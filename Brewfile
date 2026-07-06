@@ -1,104 +1,87 @@
-tap "hashicorp/tap", trusted: true
-# Simple, modern, secure file encryption
+tap "hashicorp/tap"
+tap "oocx/tfplan2md"
 brew "age"
-# Mozilla CA certificate store
 brew "ca-certificates"
-# Cryptography and SSL/TLS Toolkit
 brew "openssl@3"
-# Library for decimal floating point arithmetic
 brew "mpdecimal"
-# Library for command-line editing
 brew "readline"
-# General-purpose data compression with high compression ratio
 brew "xz"
-# Display directories as trees (with optional color/HTML output)
 brew "tree"
-# Automate deployment, configuration, and upgrading
 brew "ansible"
-# Checks ansible playbooks for practices and behaviour
 brew "ansible-lint"
-# Microsoft Azure CLI 2.0
-brew "azure-cli"
-# GNU internationalization (i18n) and localization (l10n) library
+brew "aztfexport"
 brew "gettext"
-# Bourne-Again SHell, a UNIX command interpreter
 brew "bash"
-# Manage your dotfiles across multiple diverse machines, securely
+brew "bat"
+brew "checkov"
 brew "chezmoi"
-# Get a file from an HTTP, HTTPS or FTP server
+brew "coreutils"
 brew "curl"
-# Load/unload environment variables based on $PWD
 brew "direnv"
-# Simple, fast and user-friendly alternative to find
 brew "fd"
-# Command-line fuzzy finder written in Go
 brew "fzf"
-# GNU database manager
 brew "gdbm"
-# GitHub command-line tool
 brew "gh"
-# GNU Privacy Guard (OpenPGP)
+brew "gitleaks"
 brew "gnupg"
-# Graph visualization software from AT&T and Bell Labs
 brew "graphviz"
-# Improved top (interactive process viewer)
+brew "helm"
 brew "htop"
-# Lightweight and flexible command-line JSON processor
+brew "hyperfine"
+brew "infracost"
+brew "ipcalc"
+brew "iperf3"
 brew "jq"
-# Open-source, cross-platform JavaScript runtime environment
+brew "kubernetes-cli"
 brew "node"
-# Execute binaries from Python packages in isolated environments
+brew "markdownlint-cli"
+brew "media-info"
+brew "netaddr"
+brew "nmap"
 brew "pipx"
-# Fast, disk space efficient package manager
-brew "pnpm"
-# Framework for managing multi-language pre-commit hooks
 brew "pre-commit"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.10"
-# Interpreted, interactive, object-oriented programming language
-brew "python@3.11"
-# Search tool like grep and The Silver Searcher
-brew "ripgrep"
-# Cross-shell prompt for astronauts
+brew "sarif-tools"
 brew "starship"
-# Terminal multiplexer
+brew "terraform-docs"
+brew "tflint"
+brew "tfsec"
 brew "tmux"
-# Extremely fast Python package installer and resolver, written in Rust
 brew "uv"
-# Generator for LS_COLORS with support for multiple color themes
 brew "vivid"
-# Internet file retriever
+brew "watch"
 brew "wget"
-# Fish-like fast/unobtrusive autosuggestions for zsh
 brew "zsh-autosuggestions"
-# Fish shell like syntax highlighting for zsh
 brew "zsh-syntax-highlighting"
-# Packer
 brew "hashicorp/tap/packer"
-# Terraform
 brew "hashicorp/tap/terraform"
-# Command-line interface for 1Password
+brew "oocx/tfplan2md/tfplan2md"
 cask "1password-cli"
-# Web browser focusing on privacy
 cask "brave-browser"
-# Brings the power of Copilot coding agent directly to your terminal
 cask "copilot-cli"
 cask "font-fira-mono-nerd-font"
 cask "font-hack-nerd-font"
 cask "font-sauce-code-pro-nerd-font"
-# Set of tools to manage resources and applications hosted on Google Cloud
 cask "gcloud-cli"
-# Terminal emulator that uses platform-native UI and GPU acceleration
 cask "ghostty"
-# Knowledge base that works on top of a local folder of plain text Markdown files
-cask "obsidian", args: { appdir: "~/Applications" }
-# Cloud storage client
-cask "onedrive"
-# Control your tools with a few keystrokes
 cask "raycast"
-# Music streaming service
 cask "spotify"
-# Open-source code editor
 cask "visual-studio-code"
-# Multimedia player
 cask "vlc"
+cask "windows-app"
+vscode "esbenp.prettier-vscode"
+vscode "github.copilot-chat"
+vscode "google.gemini-cli-vscode-ide-companion"
+vscode "gruntfuggly.todo-tree"
+vscode "ms-python.debugpy"
+vscode "ms-python.python"
+vscode "ms-python.vscode-pylance"
+vscode "ms-python.vscode-python-envs"
+vscode "ms-vscode-remote.remote-ssh"
+vscode "ms-vscode-remote.remote-ssh-edit"
+vscode "ms-vscode.remote-explorer"
+vscode "ms-vscode.remote-repositories"
+vscode "pkief.material-icon-theme"
+vscode "pkief.material-product-icons"
+vscode "redhat.ansible"
+vscode "redhat.vscode-yaml"
+vscode "yzhang.markdown-all-in-one"
