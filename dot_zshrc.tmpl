@@ -1,4 +1,4 @@
-{{- if eq .chezmoi.os "darwin" }}
+{{- if eq .chezmoi.os "darwin" -}}
 setopt INTERACTIVE_COMMENTS
 setopt APPEND_HISTORY
 setopt INC_APPEND_HISTORY
@@ -16,8 +16,8 @@ autoload -U bashcompinit && bashcompinit
 # Completions
 source "$(brew --prefix)/Caskroom/gcloud-cli/latest/google-cloud-sdk/path.zsh.inc"
 source "$(brew --prefix)/Caskroom/gcloud-cli/latest/google-cloud-sdk/completion.zsh.inc"
-source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source /opt/homebrew/opt/antidote/share/antidote/antidote.zsh
+antidote load
 source <(fzf --zsh)
 complete -o nospace -C /opt/homebrew/bin/terraform terraform
 
@@ -32,4 +32,4 @@ eval "$(direnv hook zsh)"
 
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh)
 
-{{ end }}
+{{- end -}}
