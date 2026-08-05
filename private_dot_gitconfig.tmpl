@@ -4,7 +4,7 @@
   excludesfile = ~/.gitignore_global
 
 [user]
-  email = {{ .email }}
+  email = {{ .git_email }}
   name = {{ .name }}
   signingkey = {{ onepasswordRead "op://sshkeys/Git signing personal/public key" }}
 
