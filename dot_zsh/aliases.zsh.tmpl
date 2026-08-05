@@ -1,16 +1,4 @@
 {{- if eq .chezmoi.os "darwin" }}
-
-# Terraform
-alias tf='terraform'
-alias tfaa="terraform apply -auto-approve"
-alias tfinit='tinitgcp'
-alias tff='terraform fmt -recursive'
-alias tfp='terraform plan'          # Plan Terraform changes
-alias tfsl='terraform state list'   # List Terraform state resources
-alias tfss='terraform state show'   # Show details of a Terraform state resource
-alias tfv='terraform validate'     # Validate Terraform configuration
-alias tfrm='rm -rf .terraform .terraform.lock.hcl'  # Remove Terraform cache
-
 # git 
 alias gitcm='git commit -m'
 alias gitdir="git rev-parse --show-toplevel"
@@ -18,7 +6,7 @@ alias gitpcr='git add . && pre-commit run'
 
 # gcloud
 alias gcelist="gcloud compute instances list"
-alias gcacc="gcloud_account"
+alias gcal="gcloud auth login --update-adc"
 
 # Basic
 alias grep='grep --color=auto'
@@ -32,4 +20,5 @@ alias la='ls -A --color=auto'
 alias l='ls -CF --color=auto'
 
 alias history="history 1"
+
 {{ end }}
