@@ -30,4 +30,6 @@ eval "$(direnv hook zsh)"
 # VSCode integration
 [[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path zsh)"
 
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+
 {{ end }}

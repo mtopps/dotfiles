@@ -1,12 +1,15 @@
 {{- if eq .chezmoi.os "darwin" }}
+
 # Terraform
 alias tf='terraform'
 alias tfaa="terraform apply -auto-approve"
+alias tfinit='tinitgcp'
 alias tff='terraform fmt -recursive'
 alias tfp='terraform plan'          # Plan Terraform changes
 alias tfsl='terraform state list'   # List Terraform state resources
 alias tfss='terraform state show'   # Show details of a Terraform state resource
 alias tfv='terraform validate'     # Validate Terraform configuration
+alias tfrm='rm -rf .terraform .terraform.lock.hcl'  # Remove Terraform cache
 
 # git 
 alias gitcm='git commit -m'
