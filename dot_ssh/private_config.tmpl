@@ -8,11 +8,16 @@ Host *
   AddKeysToAgent yes
   UseKeychain yes
   IdentityAgent "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+  CanonicalizeHostname yes
+  CanonicalDomains mtopps.com
 
-Host ig88 k2so r2d2
+Host ig88 k2so r2d2 actualbudget opconnectsrv*
   User root
 
-Host k3s02
+Host k3s-* k3s02 k3s03
   User ubuntu
+
+Host docksrv k3s01
+  User matt
 
 {{- end }}
